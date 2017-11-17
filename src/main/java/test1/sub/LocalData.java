@@ -7,21 +7,7 @@ import java.util.Date;
 import org.apache.commons.dbutils.QueryRunner;
 
 //local index表插入数据
-public class LocalData {
-	public void execute(String arg) {
-		int thread = 1;
-		int parseInt = Integer.parseInt(arg);
-		thread = parseInt;
-
-		for (int i = 0; i < thread; i++) {
-			new Thread() {
-				public void run() {
-					insertData();
-				}
-			}.start();
-		}
-	}
-
+public class LocalData extends AbstractData {
 	public void insertData() {
 		try {
 			Connection connection = null;

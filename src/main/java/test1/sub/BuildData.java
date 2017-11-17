@@ -1,10 +1,11 @@
 package test1.sub;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 //制造uudid 10个字段的测试数据,批量每次制造1000个
 public class BuildData {
-	private static int count = 0;
+	private static AtomicLong count = new AtomicLong(0);
 
 	public static String[][] buildData() {
 		String[][] test = new String[1000][10];
@@ -14,15 +15,15 @@ public class BuildData {
 				test[i][j] = id + "-" + j;
 			}
 		}
-		addCount(1000);
+		count.addAndGet(1000);
 		return test;
 	}
 
-	public static synchronized void addCount(int add) {
-		count = count + add;
+	public static long getCount() {
+		return count.get();
 	}
 
-	public static int getCount() {
-		return count;
+	public static void setCount(long value) {
+		count = new AtomicLong(value);
 	}
 }

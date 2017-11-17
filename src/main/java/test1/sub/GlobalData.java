@@ -7,20 +7,7 @@ import java.util.Date;
 import org.apache.commons.dbutils.QueryRunner;
 
 //global index表插入数据
-public class GlobalData {
-	public void execute(String arg) {
-		int thread = 1;
-		int parseInt = Integer.parseInt(arg);
-		thread = parseInt;
-
-		for (int i = 0; i < thread; i++) {
-			new Thread() {
-				public void run() {
-					insertData();
-				}
-			}.start();
-		}
-	}
+public class GlobalData extends AbstractData {
 
 	public void insertData() {
 		try {

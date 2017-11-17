@@ -3,7 +3,6 @@ package test1.sub;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -14,26 +13,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Table;
 
 //批量插入hbase数据
-public class HbaseData {
-	private int count = 0;
-
-	public void execute(String arg) {
-		int thread = 1;
-		int parseInt = Integer.parseInt(arg);
-		thread = parseInt;
-
-		for (int i = 0; i < thread; i++) {
-			new Thread() {
-				public void run() {
-					insertData();
-				}
-			}.start();
-		}
-	}
-
-	private synchronized void addCount(int add) {
-		count = count + add;
-	}
+public class HbaseData extends AbstractData {
 
 	public void insertData() {
 		try {
@@ -43,10 +23,12 @@ public class HbaseData {
 			Table table = createConnection.getTable(TableName.valueOf("test_table_hbase"));
 			for (;;) {
 				List<Put> puts = new ArrayList<Put>();
-				for (int i = 0; i < 1000; i++) {
-					String rowkey = UUID.randomUUID().toString().replaceAll("-", "");
+				String[][] buildData = BuildData.buildData();
+				for (int i = 0; i < buildData.length; i++) {
+					String[] array1 = buildData[i];
 					String cf1 = "cf1";
-					Put put = new Put(rowkey.getBytes());
+					String rowkey = array1[0];
+					Put put = new Put(array1[0].getBytes());
 					put.addColumn(cf1.getBytes(), "f1".getBytes(), (rowkey + "-" + 0).getBytes());
 					put.addColumn(cf1.getBytes(), "f2".getBytes(), (rowkey + "-" + 1).getBytes());
 					put.addColumn(cf1.getBytes(), "f3".getBytes(), (rowkey + "-" + 2).getBytes());
@@ -59,8 +41,7 @@ public class HbaseData {
 					puts.add(put);
 				}
 				table.put(puts);
-				addCount(1000);
-				System.out.println(new Date() + ":" + Thread.currentThread().getName() + "--" + count);
+				System.out.println(new Date() + ":" + Thread.currentThread().getName() + "--" + BuildData.getCount());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

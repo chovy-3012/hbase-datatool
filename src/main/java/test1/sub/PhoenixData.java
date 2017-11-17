@@ -7,21 +7,7 @@ import java.util.Date;
 import org.apache.commons.dbutils.QueryRunner;
 
 //直接插入phoenix数据
-public class PhoenixData {
-
-	public void execute(String arg) {
-		int thread = 1;
-		int parseInt = Integer.parseInt(arg);
-		thread = parseInt;
-
-		for (int i = 0; i < thread; i++) {
-			new Thread() {
-				public void run() {
-					insertData();
-				}
-			}.start();
-		}
-	}
+public class PhoenixData extends AbstractData {
 
 	public void insertData() {
 		try {
