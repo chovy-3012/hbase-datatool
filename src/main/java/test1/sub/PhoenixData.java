@@ -31,11 +31,10 @@ public class PhoenixData {
 			QueryRunner queryRunner = new QueryRunner();
 
 			String[][] data = null;
-			BuildData buildData = new BuildData();
-			while ((data = buildData.buildData()) != null) {
+			while ((data = BuildData.buildData()) != null) {
 				queryRunner.batch(connection, "upsert into test_table_phoenix values (?,?,?,?,?,?,?,?,?,?)", data);
 				connection.commit();
-				System.out.println(new Date() + ":" + Thread.currentThread().getName() + "--" + buildData.getCount());
+				System.out.println(new Date() + ":" + Thread.currentThread().getName() + "--" + BuildData.getCount());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -2,10 +2,11 @@ package test1.sub;
 
 import java.util.UUID;
 
+//制造uudid 10个字段的测试数据,批量每次制造1000个
 public class BuildData {
-	private int count = 0;
+	private static int count = 0;
 
-	public String[][] buildData() {
+	public static String[][] buildData() {
 		String[][] test = new String[1000][10];
 		for (int i = 0; i < 1000; i++) {
 			String id = UUID.randomUUID().toString().replaceAll("-", "");
@@ -17,11 +18,11 @@ public class BuildData {
 		return test;
 	}
 
-	public synchronized void addCount(int add) {
+	public static synchronized void addCount(int add) {
 		count = count + add;
 	}
 
-	public int getCount() {
+	public static int getCount() {
 		return count;
 	}
 }
